@@ -1,5 +1,9 @@
 package types
 
 type InputDataRequest struct {
-	Data string `json:"data"`
+	Data string `json:"data" validate:"required"`
+}
+
+type BatchInputDataRequest struct {
+	Data []string `json:"data" validate:"required"`
 }

@@ -23,7 +23,7 @@ func LoadHTTPConfig() HTTPConfig {
 
 	appPort := os.Getenv("PORT")
 	if appPort == "" {
-		appPort = "8000"
+		appPort = "8100"
 	}
 	return HTTPConfig{
 		Host:       os.Getenv("HOST"),

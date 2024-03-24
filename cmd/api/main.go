@@ -37,6 +37,18 @@ func main() {
 
 	container.Provide(handlers.NewBase64Handler)
 
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, `
+       __                    __                       __       
+  ____/ /  ___     _   __   / /_   ____     ____     / /  _____
+ / __  /  / _ \   | | / /  / __/  / __ \   / __ \   / /  / ___/
+/ /_/ /  /  __/   | |/ /  / /_   / /_/ /  / /_/ /  / /  (__  ) 
+\__,_/   \___/    |___/   \__/   \____/   \____/  /_/  /____/  
+
+-- Project by github.com/vnkdj5
+`)
+	})
+
 	router.RegisterRoutes(e.Group("/api/v1"), container)
 
 	// Start server
