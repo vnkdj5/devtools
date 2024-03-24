@@ -19,6 +19,11 @@ func RegisterRoutes(e *echo.Group, container *dig.Container) error {
 		base64Grp.POST("/encode", base64handler.Encode)
 		base64Grp.POST("/decode", base64handler.Decode)
 
+		stringsHandler := handlers.NewStringsHandler(logger)
+
+		stringsGrp := e.Group(("/strings"))
+		stringsGrp.POST("", stringsHandler.Process)
+
 	})
 
 }
