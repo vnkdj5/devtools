@@ -38,18 +38,27 @@ func main() {
 	container.Provide(handlers.NewBase64Handler)
 
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, `
-       __                    __                       __       
-  ____/ /  ___     _   __   / /_   ____     ____     / /  _____
- / __  /  / _ \   | | / /  / __/  / __ \   / __ \   / /  / ___/
-/ /_/ /  /  __/   | |/ /  / /_   / /_/ /  / /_/ /  / /  (__  ) 
-\__,_/   \___/    |___/   \__/   \____/   \____/  /_/  /____/  
-
--- Project by github.com/vnkdj5
-`)
+		return c.File("assets/public/index.html")
 	})
 
 	router.RegisterRoutes(e.Group("/api/v1"), container)
+
+	// Define a custom 404 handler to handle not found routes
+	e.HTTPErrorHandler = func(err error, c echo.Context) {
+		// Check if it's a 404 error
+		if he, ok := err.(*echo.HTTPError); ok {
+			if he.Code == http.StatusNotFound {
+				// Redirect to your HTTP page
+				c.Redirect(http.StatusTemporaryRedirect, "/404")
+				return
+			}
+		}
+		// Handle other errors
+		e.DefaultHTTPErrorHandler(err, c)
+	}
+
+	e.File("/404", "assets/public/404.html")
+	e.Static("/", "assets")
 
 	// Start server
 	go func() {
