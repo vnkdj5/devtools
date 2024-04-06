@@ -27,3 +27,37 @@ jobs:
     - name: Build
       run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build -o devtools ./cmd/api/main.go
 
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: devtools
+        path: ./devtools
+
+  publish-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1.0.0 # You can use a version number or a specific tag here
+        release_name: Release ${{ github.sha }}
+        body: |
+          Release based on commit: ${{ github.sha }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./devtools/devtools # Assuming your build output is in ./devtools folder
+        asset_name: devtools
+        asset_content_type: application/zip
+
