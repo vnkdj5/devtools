@@ -24,6 +24,10 @@ func RegisterRoutes(e *echo.Group, container *dig.Container) error {
 		stringsGrp := e.Group(("/strings"))
 		stringsGrp.POST("", stringsHandler.Process)
 
+		cryptoHanlder := handlers.NewCryptoHandler(logger)
+		cryptoGrp := e.Group("/crypto")
+		cryptoGrp.POST("/hmac", cryptoHanlder.GenerateHMAC)
+
 	})
 
 }
