@@ -10,3 +10,5 @@ const InvalidRequestErrorCode = "7001"
 const TypeValidationErrorCode = "7002"
 const RequestParsingErrorCode = "7003"
 const RequiredPropertyMissingErrorCode = "7004"
+
+const HMACGenerationError = "6000"
